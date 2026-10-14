@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UJIAN AKHIR SEMESTER SMA</title>
+
+<style>
+:root {
+  --bg: #f0ebf8;
+  --surface: #ffffff;
+  --text: #202124;
+  --muted: #5f6368;
+  --primary: #673ab7;
+  --primary-hover: #512da8;
+  --border: #dadce0;
+  --soft: #f8f7fc;
+  --success: #188038;
+  --danger: #d93025;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  transition: background .25s, color .25s;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#matrix {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+body.hacker {
+  --bg: #030805;
+  --surface: #0b120d;
+  --text: #eaffef;
+  --muted: #9cb7a3;
+  --primary: #00e85c;
+  --primary-hover: #00bd49;
+  --border: #24432d;
+  --soft: #101b13;
+  --success: #00ff66;
+  --danger: #ff5555;
+}
+
+body.hacker #matrix {
+  opacity: .20;
+}
+
+.app {
+  width: 100%;
+  max-width: 760px;
+  margin: auto;
+  padding: 20px 14px 110px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 10px solid var(--primary);
+  border-radius: 10px;
+  padding: 25px 22px;
+  margin-bottom: 13px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+
+.hero h1 {
+  font-size: clamp(23px, 5vw, 31px);
+  line-height: 1.3;
+  font-weight: 500;
+  margin: 0 0 12px;
+}
+
+.hero p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 23px;
+  margin-bottom: 13px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+
+.card h2 {
+  font-size: 21px;
+  font-weight: 500;
+  margin: 0 0 20px;
+}
+
+.card h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+label.field-label {
+  display: block;
+  font-size: 14px;
+  margin: 20px 0 8px;
+}
+
+input[type="text"], select {
+  width: 100%;
+  max-width: 450px;
+  padding: 12px 2px;
+  border: none;
+  border-bottom: 1px solid #aeb0b4;
+  background: transparent;
+  color: var(--text);
+  outline: none;
+  border-radius: 0;
+}
+
+input[type="text"]:focus {
+  border-bottom: 2px solid var(--primary);
+}
+
+select {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 12px;
+  max-width: 100%;
+}
+
+button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.btn-main {
+  background: var(--primary);
+  color: #fff;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+body.hacker .btn-main {
+  color: #001c08;
+}
+
+.btn-main:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--primary);
+  padding: 11px 17px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  padding: 11px 16px;
+  border-radius: 5px;
+}
+
+.full-button {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.info {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.top-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.badge {
+  padding: 7px 10px;
+  background: var(--soft);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.progress {
+  height: 5px;
+  background: var(--border);
+  margin: 20px 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0;
+  background: var(--primary);
+  transition: width .2s;
+}
+
+.question-title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.7;
+  margin: 16px 0 20px;
+  overflow-wrap: anywhere;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin: 10px 0;
+  cursor: pointer;
+  line-height: 1.6;
+  background: var(--surface);
+}
+
+.option:hover {
+  background: var(--soft);
+}
+
+.option.selected {
+  border-color: var(--primary);
+  background: var(--soft);
+}
+
+.option input {
+  margin-top: 5px;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+}
+
+.nav-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.nav-buttons button {
+  width: 100%;
+}
+
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 7px;
+  margin-top: 15px;
+}
+
+.num-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 10px 0;
+  color: var(--text);
+}
+
+.num-btn.answered {
+  background: var(--primary);
+  color: white;
+}
+
+body.hacker .num-btn.answered {
+  color: #001b08;
+}
+
+.num-btn.current {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.auto-panel {
+  background: var(--soft);
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 22px;
+}
+
+.auto-status {
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-line;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.report-score {
+  font-size: 48px;
+  font-weight: bold;
+  color: var(--primary);
+  text-align: center;
+  margin: 25px 0;
+}
+
+.report-item {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.correct {
+  color: var(--success);
+}
+
+.wrong {
+  color: var(--danger);
+}
+
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 25px;
+}
+
+/* TOMBOL BULAT: YANZ.PNG */
+
+.floating-button {
+  position: fixed;
+  z-index: 1002;
+  right: 17px;
+  bottom: 20px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  background: #080d0a;
+  border: 2px solid var(--primary);
+  box-shadow: 0 3px 15px rgba(0,0,0,.25);
+}
+
+.floating-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+}
+
+/* MENU MELAYANG: VIDEO YANZ.MP4 */
+
+.floating-menu {
+  position: fixed;
+  z-index: 1001;
+  right: 17px;
+  bottom: 96px;
+  width: min(280px, calc(100vw - 34px));
+  border: 1px solid var(--primary);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #08100b;
+  box-shadow: 0 8px 35px rgba(0,0,0,.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px) scale(.96);
+  transition: opacity .2s, transform .2s, visibility .2s;
+}
+
+.floating-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.menu-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.menu-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0,0,0,.79);
+}
+
+.menu-content {
+  position: relative;
+  z-index: 2;
+  padding: 15px;
+}
+
+.menu-title {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding-bottom: 13px;
+  border-bottom: 1px solid rgba(255,255,255,.25);
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 6px;
+  color: white;
+  text-align: left;
+}
+
+.menu-item:hover {
+  border-color: var(--primary);
+  background: rgba(255,255,255,.08);
+}
+
+.menu-small {
+  color: #ddd;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+.theme-status {
+  color: #ddd;
+  font-size: 12px;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+@media(max-width:480px) {
+  .app {
+    padding: 12px 10px 100px;
+  }
+
+  .hero, .card {
+    padding: 18px;
+  }
+
+  .number-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .floating-button {
+    width: 58px;
+    height: 58px;
+    right: 13px;
+    bottom: 15px;
+  }
+
+  .floating-menu {
+    right: 13px;
+    bottom: 84px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="app">
+
+  <header class="hero">
+    <h1>UJIAN AKHIR SEMESTER SMA</h1>
+    <p>
+      Formulir ujian online<br>
+      Silakan lengkapi identitas dan jawab setiap pertanyaan.
+    </p>
+  </header>
+
+  <!-- IDENTITAS -->
+  <section class="card" id="startScreen">
+    <h2>Identitas Peserta</h2>
+
+    <label class="field-label" for="studentName">Nama lengkap</label>
+    <input id="studentName" type="text" placeholder="Jawaban Anda">
+
+    <label class="field-label" for="studentClass">Kelas</label>
+    <input id="studentClass" type="text" placeholder="Contoh: XII IPA 1">
+
+    <label class="field-label" for="duration">Durasi ujian</label>
+    <select id="duration">
+      <option value="30">30 menit</option>
+      <option value="45">45 menit</option>
+      <option value="60" selected>60 menit</option>
+      <option value="90">90 menit</option>
+      <option value="120">120 menit</option>
+    </select>
+
+    <p class="info">
+      Terdapat 40 soal pilihan ganda. Pastikan identitas kamu sudah benar.
+    </p>
+
+    <button class="btn-main full-button" id="startBtn">
+      Mulai ujian
+    </button>
+  </section>
+
+  <!-- UJIAN -->
+  <section class="card hidden" id="examScreen">
+
+    <div class="top-info">
+      <span class="badge" id="questionCounter">Soal 1 dari 40</span>
+      <span class="badge" id="timer">60:00</span>
+    </div>
+
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
+
+    <p class="info" id="subjectLabel"></p>
+    <div class="question-title" id="questionText"></div>
+    <div id="optionsContainer"></div>
+
+    <div class="nav-buttons">
+      <button class="btn-secondary" id="prevBtn">Sebelumnya</button>
+      <button class="btn-main" id="nextBtn">Berikutnya</button>
+    </div>
+
+    <p class="info" id="answerStatus"></p>
+
+    <h3>Daftar nomor soal</h3>
+    <div class="number-grid" id="numberGrid"></div>
+
+    <div class="auto-panel">
+      <div class="top-info">
+        <strong>Jawaban otomatis</strong>
+        <span class="badge" id="autoBadge">NONAKTIF</span>
+      </div>
+
+      <p class="auto-status" id="autoStatus">
+        Jawaban otomatis belum dijalankan.
+      </p>
+
+      <button class="btn-secondary full-button" id="autoBtn">
+        Mulai jawab otomatis
+      </button>
+
+      <button class="btn-danger full-button" id="stopAutoBtn">
+        Hentikan otomatis
+      </button>
+    </div>
+
+    <button class="btn-danger full-button" id="finishBtn">
+      Selesaikan ujian
+    </button>
+
+  </section>
+
+  <!-- LAPORAN -->
+  <section class="card hidden" id="resultScreen">
+    <h2 style="text-align:center">Hasil ujian</h2>
+
+    <div class="report-score" id="scoreDisplay">0</div>
+    <div id="resultSummary"></div>
+
+    <h3 style="margin-top:25px">Rincian jawaban</h3>
+    <div id="answerReview"></div>
+
+    <button class="btn-main full-button" id="restartBtn">
+      Kembali ke halaman awal
+    </button>
+  </section>
+
+  <div class="footer">
+    UJIAN AKHIR SEMESTER SMA
+  </div>
+
+</div>
+
+<!-- MENU MELAYANG -->
+<div class="floating-menu" id="floatingMenu">
+
+  <!-- VIDEO HANYA MENJADI BACKGROUND MENU -->
+  <video
+    class="menu-video"
+    id="menuVideo"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto">
+    <source src="YANZ.mp4" type="video/mp4">
+  </video>
+
+  <div class="menu-overlay"></div>
+
+  <div class="menu-content">
+    <div class="menu-title">YANZ CONTROL PANEL</div>
+
+    <button class="menu-item" id="menuHome">
+      ⌂ &nbsp; Beranda
+    </button>
+
+    <button class="menu-item" id="menuAuto">
+      ⚡ &nbsp; Jawaban otomatis
+    </button>
+
+    <button class="menu-item" id="menuStop">
+      ■ &nbsp; Hentikan otomatis
+    </button>
+
+    <button class="menu-item" id="menuReport">
+      ▤ &nbsp; Laporan hasil
+    </button>
+
+    <button class="menu-item" id="themeToggle">
+      ◉ &nbsp; Aktifkan tema hijau
+    </button>
+
+    <button class="menu-item" id="menuClose">
+      ✕ &nbsp; Tutup menu
+    </button>
+
+    <div class="theme-status" id="themeStatus">
+      Tema saat ini: Google Forms
+    </div>
+
+    <div class="menu-small">
+      YANZ • UJIAN SMA
+    </div>
+  </div>
+</div>
+
+<!-- TOMBOL BULAT HANYA MENGGUNAKAN YANZ.PNG -->
+<button
+  class="floating-button"
+  id="floatingButton"
+  aria-label="Buka menu Yanz"
+  title="Menu Yanz">
+
+  <img src="yanz.png" alt="Yanz">
+
+</button>
+
+<script>
+"use strict";
+
+/* ==================================
+   DATA SOAL
+================================== */
+
+const questions = [
+{subject:"Matematika",q:"Hasil dari 12 × 8 adalah ...",o:["86","96","92","108","88"],a:1},
+{subject:"Matematika",q:"Hasil dari 144 ÷ 12 adalah ...",o:["10","11","12","13","14"],a:2},
+{subject:"Matematika",q:"Jika x + 7 = 15, nilai x adalah ...",o:["6","7","8","9","10"],a:2},
+{subject:"Matematika",q:"Hasil dari 3² + 4² adalah ...",o:["12","16","20","25","49"],a:3},
+{subject:"Matematika",q:"Akar kuadrat dari 169 adalah ...",o:["11","12","13","14","15"],a:2},
+
+{subject:"Bahasa Indonesia",q:"Gagasan utama dalam sebuah paragraf disebut ...",o:["Kalimat penjelas","Ide pokok","Kesimpulan","Ilustrasi","Opini tambahan"],a:1},
+{subject:"Bahasa Indonesia",q:"Teks yang berisi langkah-langkah melakukan sesuatu disebut teks ...",o:["Narasi","Deskripsi","Prosedur","Eksposisi","Persuasi"],a:2},
+{subject:"Bahasa Indonesia",q:"Sinonim kata 'cermat' adalah ...",o:["Ceroboh","Teliti","Lambat","Ragu","Malas"],a:1},
+{subject:"Bahasa Indonesia",q:"Kalimat yang digunakan untuk menanyakan sesuatu disebut kalimat ...",o:["Imperatif","Deklaratif","Interogatif","Eksklamatif","Pasif"],a:2},
+{subject:"Bahasa Indonesia",q:"Penulisan kata baku yang benar adalah ...",o:["Resiko","Apotik","Aktifitas","Praktik","Ijin"],a:3},
+
+{subject:"Bahasa Inggris",q:"What is the past form of 'go'?",o:["Goed","Gone","Went","Going","Goes"],a:2},
+{subject:"Bahasa Inggris",q:"She ... a student.",o:["Am","Are","Be","Is","Were"],a:3},
+{subject:"Bahasa Inggris",q:"The opposite of 'expensive' is ...",o:["Cheap","Large","Tall","Beautiful","Difficult"],a:0},
+{subject:"Bahasa Inggris",q:"What is the plural form of 'child'?",o:["Childs","Children","Childes","Childrens","Child"],a:1},
+{subject:"Bahasa Inggris",q:"'I am studying now' uses which tense?",o:["Simple Past","Simple Present","Present Continuous","Past Perfect","Future Perfect"],a:2},
+
+{subject:"Fisika",q:"Satuan gaya dalam SI adalah ...",o:["Joule","Watt","Newton","Pascal","Ampere"],a:2},
+{subject:"Fisika",q:"Alat untuk mengukur kuat arus listrik adalah ...",o:["Voltmeter","Amperemeter","Barometer","Termometer","Higrometer"],a:1},
+{subject:"Fisika",q:"Kecepatan dihitung menggunakan rumus ...",o:["Jarak × waktu","Jarak ÷ waktu","Waktu ÷ jarak","Massa × percepatan","Gaya ÷ luas"],a:1},
+{subject:"Fisika",q:"Energi yang dimiliki benda karena gerakannya disebut energi ...",o:["Potensial","Kimia","Kinetik","Nuklir","Listrik statis"],a:2},
+{subject:"Fisika",q:"Satuan daya dalam SI adalah ...",o:["Newton","Joule","Watt","Tesla","Volt"],a:2},
+
+{subject:"Kimia",q:"Simbol kimia untuk oksigen adalah ...",o:["Ox","O","Og","Om","Oi"],a:1},
+{subject:"Kimia",q:"Rumus kimia air adalah ...",o:["CO₂","O₂","H₂O","NaCl","H₂O₂"],a:2},
+{subject:"Kimia",q:"Larutan dengan pH kurang dari 7 bersifat ...",o:["Basa","Netral","Asam","Garam","Tidak memiliki sifat"],a:2},
+{subject:"Kimia",q:"Simbol kimia untuk emas adalah ...",o:["Ag","Au","Fe","Em","Gd"],a:1},
+{subject:"Kimia",q:"Partikel bermuatan negatif dalam atom adalah ...",o:["Proton","Neutron","Elektron","Nukleus","Foton"],a:2},
+
+{subject:"Biologi",q:"Tempat berlangsungnya fotosintesis pada sel tumbuhan adalah ...",o:["Mitokondria","Ribosom","Kloroplas","Lisosom","Nukleus"],a:2},
+{subject:"Biologi",q:"Organ yang berfungsi memompa darah adalah ...",o:["Paru-paru","Hati","Ginjal","Jantung","Lambung"],a:3},
+{subject:"Biologi",q:"Unit struktural dan fungsional terkecil makhluk hidup adalah ...",o:["Organ","Jaringan","Sel","Sistem organ","Organisme"],a:2},
+{subject:"Biologi",q:"Proses perubahan air menjadi uap disebut ...",o:["Kondensasi","Evaporasi","Presipitasi","Infiltrasi","Sublimasi"],a:1},
+{subject:"Biologi",q:"Pembawa informasi genetik pada makhluk hidup adalah ...",o:["DNA","Air","Glukosa","Lemak","Mineral"],a:0},
+
+{subject:"Sejarah",q:"Indonesia memproklamasikan kemerdekaan pada tanggal ...",o:["1 Juni 1945","17 Agustus 1945","10 November 1945","20 Mei 1908","28 Oktober 1928"],a:1},
+{subject:"Sejarah",q:"Organisasi Budi Utomo berdiri pada tahun ...",o:["1900","1905","1908","1920","1928"],a:2},
+{subject:"Sejarah",q:"Sumpah Pemuda diperingati setiap tanggal ...",o:["2 Mei","17 Agustus","10 November","28 Oktober","1 Juni"],a:3},
+
+{subject:"Geografi",q:"Garis khayal yang membagi bumi menjadi belahan utara dan selatan adalah ...",o:["Meridian utama","Garis khatulistiwa","Garis bujur timur","Garis tanggal","Garis lintang selatan"],a:1},
+{subject:"Geografi",q:"Gunung tertinggi di Indonesia adalah ...",o:["Semeru","Rinjani","Kerinci","Puncak Jaya","Merapi"],a:3},
+
+{subject:"Ekonomi",q:"Kegiatan menghasilkan barang atau jasa disebut ...",o:["Konsumsi","Distribusi","Produksi","Investasi","Transaksi"],a:2},
+{subject:"Ekonomi",q:"Kegiatan menyalurkan barang dari produsen kepada konsumen disebut ...",o:["Produksi","Distribusi","Konsumsi","Tabungan","Inflasi"],a:1},
+
+{subject:"PPKn",q:"Dasar negara Indonesia adalah ...",o:["UUD 1945","Pancasila","Bhinneka Tunggal Ika","Proklamasi","Sumpah Pemuda"],a:1},
+{subject:"PPKn",q:"Semboyan Bhinneka Tunggal Ika memiliki arti ...",o:["Bersatu kita teguh","Berbeda-beda tetapi tetap satu","Keadilan bagi semua","Bekerja bersama","Maju terus pantang mundur"],a:1},
+
+{subject:"Informatika",q:"Kepanjangan CPU adalah ...",o:["Central Processing Unit","Computer Primary Utility","Central Program User","Control Processing User","Computer Power Unit"],a:0}
+];
+
+/* ==================================
+   STATUS APLIKASI
+================================== */
+
+const $ = id => document.getElementById(id);
+
+let currentQuestion = 0;
+let answers = [];
+let finished = false;
+let autoRunning = false;
+let autoTimer = null;
+let clockTimer = null;
+let startTime = null;
+let endTime = null;
+let durationSeconds = 3600;
+let remainingSeconds = 3600;
+
+let student = {
+  name: "",
+  className: ""
+};
+
+const letters = ["A","B","C","D","E"];
+
+const startScreen = $("startScreen");
+const examScreen = $("examScreen");
+const resultScreen = $("resultScreen");
+
+answers = new Array(questions.length).fill(null);
+
+/* ==================================
+   MULAI UJIAN
+================================== */
+
+$("startBtn").addEventListener("click", startExam);
+
+function startExam() {
+  const name = $("studentName").value.trim();
+  const className = $("studentClass").value.trim();
+
+  if (!name || !className) {
+    alert("Silakan isi nama dan kelas terlebih dahulu.");
+    return;
+  }
+
+  student.name = name;
+  student.className = className;
+
+  durationSeconds = Number($("duration").value) * 60;
+  remainingSeconds = durationSeconds;
+
+  currentQuestion = 0;
+  answers = new Array(questions.length).fill(null);
+
+  finished = false;
+  autoRunning = false;
+  startTime = Date.now();
+  endTime = null;
+
+  $("autoStatus").textContent = "Jawaban otomatis belum dijalankan.";
+  $("autoBadge").textContent = "NONAKTIF";
+
+  startScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  examScreen.classList.remove("hidden");
+
+  renderQuestion();
+  renderNumberGrid();
+  updateTimer();
+
+  clearInterval(clockTimer);
+  clockTimer = setInterval(tick, 1000);
+
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function tick() {
+  if (finished || startTime === null) return;
+
+  const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+
+  remainingSeconds = Math.max(
+    0,
+    durationSeconds - elapsedSeconds
+  );
+
+  updateTimer();
+
+  if (remainingSeconds <= 0) {
+    finishExam(true);
+  }
+}
+
+function updateTimer() {
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
+
+  $("timer").textContent =
+    String(minutes).padStart(2,"0") + ":" +
+    String(seconds).padStart(2,"0");
+}
+
+function elapsed() {
+  if (startTime === null) return 0;
+
+  const end = endTime !== null ? endTime : Date.now();
+
+  return Math.max(0, Math.floor((end - startTime) / 1000));
+}
+
+function formatTime(total) {
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+
+  if (h > 0) return `${h} jam ${m} menit ${s} detik`;
+
+  return `${m} menit ${s} detik`;
+}
+
+/* ==================================
+   RENDER SOAL
+================================== */
+
+function renderQuestion() {
+  if (finished) return;
+
+  const q = questions[currentQuestion];
+
+  $("questionCounter").textContent =
+    `Soal ${currentQuestion + 1} dari ${questions.length}`;
+
+  $("subjectLabel").textContent =
+    "Mata pelajaran: " + q.subject;
+
+  $("questionText").textContent = q.q;
+
+  $("progressBar").style.width =
+    ((currentQuestion + 1) / questions.length * 100) + "%";
+
+  const container = $("optionsContainer");
+  container.innerHTML = "";
+
+  q.o.forEach((option, index) => {
+    const label = document.createElement("label");
+    label.className = "option";
+
+    if (answers[currentQuestion] === index) {
+      label.classList.add("selected");
+    }
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "answer";
+    radio.value = index;
+    radio.checked = answers[currentQuestion] === index;
+
+    const text = document.createElement("span");
+    text.textContent = `${letters[index]}. ${option}`;
+
+    radio.addEventListener("change", () => {
+      if (finished) return;
+
+      answers[currentQuestion] = index;
+
+      renderQuestion();
+      renderNumberGrid();
+    });
+
+    label.appendChild(radio);
+    label.appendChild(text);
+
+    container.appendChild(label);
+  });
+
+  if (answers[currentQuestion] === null) {
+    $("answerStatus").textContent = "Belum dijawab.";
+  } else {
+    const chosen = answers[currentQuestion];
+
+    $("answerStatus").textContent =
+      `Jawaban kamu: ${letters[chosen]}. ${q.o[chosen]}`;
+  }
+
+  $("prevBtn").disabled = currentQuestion === 0;
+
+  $("nextBtn").textContent =
+    currentQuestion === questions.length - 1
+      ? "Soal terakhir"
+      : "Berikutnya";
+}
+
+/* ==================================
+   NAVIGASI
+================================== */
+
+$("prevBtn").addEventListener("click", () => {
+  if (finished || currentQuestion <= 0) return;
+
+  currentQuestion--;
+  renderQuestion();
+  renderNumberGrid();
+});
+
+$("nextBtn").addEventListener("click", () => {
+  if (finished) return;
+
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    renderQuestion();
+    renderNumberGrid();
+  } else {
+    alert("Kamu sudah berada di soal terakhir.");
+  }
+});
+
+function renderNumberGrid() {
+  const grid = $("numberGrid");
+  grid.innerHTML = "";
+
+  questions.forEach((q, index) => {
+    const btn = document.createElement("button");
+
+    btn.className = "num-btn";
+    btn.textContent = index + 1;
+
+    if (answers[index] !== null) {
+      btn.classList.add("answered");
+    }
+
+    if (index === currentQuestion) {
+      btn.classList.add("current");
+    }
+
+    btn.addEventListener("click", () => {
+      if (finished) return;
+
+      currentQuestion = index;
+      renderQuestion();
+      renderNumberGrid();
+    });
+
+    grid.appendChild(btn);
+  });
+}
+
+/* ==================================
+   JAWABAN OTOMATIS
+================================== */
+
+$("autoBtn").addEventListener("click", startAutoAnswer);
+$("stopAutoBtn").addEventListener("click", stopAutoAnswer);
+
+function startAutoAnswer() {
+  if (finished) {
+    alert("Ujian sudah selesai.");
+    return;
+  }
+
+  if (startTime === null) {
+    alert("Mulai ujian terlebih dahulu.");
+    return;
+  }
+
+  if (autoRunning) return;
+
+  autoRunning = true;
+
+  $("autoBadge").textContent = "AKTIF";
+  $("autoStatus").textContent = "Memulai jawaban otomatis...";
+
+  autoStep();
+}
+
+function autoStep() {
+  if (!autoRunning || finished) return;
+
+  const q = questions[currentQuestion];
+
+  /*
+   * Memilih opsi berdasarkan kunci jawaban demo.
+   * Untuk pilihan acak, ganti q.a dengan:
+   * Math.floor(Math.random() * q.o.length)
+   */
+  const selected = q.a;
+
+  answers[currentQuestion] = selected;
+
+  $("autoStatus").textContent =
+    `Auto jawab: Soal ${currentQuestion + 1}/${questions.length}\n` +
+    `Pilihan: ${letters[selected]}. ${q.o[selected]}`;
+
+  $("autoBadge").textContent =
+    `${currentQuestion + 1}/${questions.length}`;
+
+  renderQuestion();
+  renderNumberGrid();
+
+  autoTimer = setTimeout(() => {
+    autoTimer = null;
+
+    if (!autoRunning || finished) return;
+
+    if (currentQuestion < questions.length - 1) {
+      currentQuestion++;
+
+      renderQuestion();
+      renderNumberGrid();
+
+      autoStep();
+    } else {
+      autoRunning = false;
+
+      $("autoBadge").textContent = "SELESAI";
+      $("autoStatus").textContent =
+        "Selesai! Semua soal sudah diproses.";
+    }
+  }, 300);
+}
+
+function stopAutoAnswer() {
+  autoRunning = false;
+
+  if (autoTimer !== null) {
+    clearTimeout(autoTimer);
+    autoTimer = null;
+  }
+
+  if (!finished) {
+    $("autoBadge").textContent = "NONAKTIF";
+
+    if (!$("autoStatus").textContent.includes("Selesai!")) {
+      $("autoStatus").textContent = "Jawaban otomatis dihentikan.";
+    }
+  }
+}
+
+/* ==================================
+   HASIL UJIAN
+================================== */
+
+$("finishBtn").addEventListener("click", () => {
+  if (finished) return;
+
+  const unanswered = answers.filter(a => a === null).length;
+
+  if (unanswered > 0) {
+    const ok = confirm(
+      `Masih ada ${unanswered} soal yang belum dijawab.\n` +
+      "Yakin ingin menyelesaikan ujian?"
+    );
+
+    if (!ok) return;
+  }
+
+  finishExam(false);
+});
+
+function finishExam(timeUp = false) {
+  if (finished) return;
+
+  /* Simpan waktu akhir sebelum status selesai diubah. */
+  endTime = Date.now();
+
+  const totalTime = elapsed();
+
+  finished = true;
+
+  stopAutoAnswer();
+  clearInterval(clockTimer);
+
+  let correct = 0;
+  let wrong = 0;
+  let unanswered = 0;
+
+  questions.forEach((q, index) => {
+    if (answers[index] === null) {
+      unanswered++;
+    } else if (answers[index] === q.a) {
+      correct++;
+    } else {
+      wrong++;
+    }
+  });
+
+  const score = Math.round(correct / questions.length * 100);
+
+  $("scoreDisplay").textContent = score;
+
+  $("resultSummary").innerHTML = `
+    <div class="report-item">
+      <strong>Nama:</strong> ${escapeHTML(student.name)}
+    </div>
+
+    <div class="report-item">
+      <strong>Kelas:</strong> ${escapeHTML(student.className)}
+    </div>
+
+    <div class="report-item">
+      <strong>Total soal:</strong> ${questions.length}
+    </div>
+
+    <div class="report-item">
+      <strong>Benar:</strong>
+      <span class="correct">${correct}</span>
+    </div>
+
+    <div class="report-item">
+      <strong>Salah:</strong>
+      <span class="wrong">${wrong}</span>
+    </div>
+
+    <div class="report-item">
+      <strong>Tidak dijawab:</strong> ${unanswered}
+    </div>
+
+    <div class="report-item">
+      <strong>Nilai:</strong> ${score}/100
+    </div>
+
+    <div class="report-item">
+      <strong>Durasi pengerjaan:</strong> ${formatTime(totalTime)}
+    </div>
+
+    <div class="report-item">
+      <strong>Status:</strong>
+      ${timeUp ? "Waktu habis" : "Ujian diselesaikan"}
+    </div>
+  `;
+
+  renderReview();
+
+  examScreen.classList.add("hidden");
+  startScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
+
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function renderReview() {
+  const container = $("answerReview");
+  container.innerHTML = "";
+
+  questions.forEach((q, index) => {
+    const chosen = answers[index];
+    const correct = chosen === q.a;
+
+    const item = document.createElement("div");
+    item.className = "report-item";
+
+    const heading = document.createElement("strong");
+    heading.textContent = `${index + 1}. [${q.subject}] ${q.q}`;
+
+    const userAnswer = document.createElement("div");
+
+    if (chosen === null) {
+      userAnswer.textContent = "Jawaban kamu: Tidak dijawab";
+    } else {
+      userAnswer.textContent =
+        `Jawaban kamu: ${letters[chosen]}. ${q.o[chosen]}`;
+
+      userAnswer.className = correct ? "correct" : "wrong";
+    }
+
+    const keyAnswer = document.createElement("div");
+    keyAnswer.className = "correct";
+    keyAnswer.textContent =
+      `Kunci jawaban: ${letters[q.a]}. ${q.o[q.a]}`;
+
+    item.appendChild(heading);
+    item.appendChild(userAnswer);
+    item.appendChild(keyAnswer);
+
+    container.appendChild(item);
+  });
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+/* ==================================
+   ULANGI UJIAN
+================================== */
+
+$("restartBtn").addEventListener("click", () => {
+  stopAutoAnswer();
+  clearInterval(clockTimer);
+
+  finished = false;
+  startTime = null;
+  endTime = null;
+  currentQuestion = 0;
+  answers = new Array(questions.length).fill(null);
+
+  resultScreen.classList.add("hidden");
+  examScreen.classList.add("hidden");
+  startScreen.classList.remove("hidden");
+
+  $("autoBadge").textContent = "NONAKTIF";
+  $("autoStatus").textContent = "Jawaban otomatis belum dijalankan.";
+
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+/* ==================================
+   MENU MELAYANG
+================================== */
+
+const floatingButton = $("floatingButton");
+const floatingMenu = $("floatingMenu");
+const menuVideo = $("menuVideo");
+
+function closeMenu() {
+  floatingMenu.classList.remove("open");
+  menuVideo.pause();
+}
+
+floatingButton.addEventListener("click", () => {
+  const isOpen = floatingMenu.classList.toggle("open");
+
+  if (isOpen) {
+    menuVideo.play().catch(() => {});
+  } else {
+    menuVideo.pause();
+  }
+});
+
+$("menuClose").addEventListener("click", closeMenu);
+
+$("menuHome").addEventListener("click", () => {
+  closeMenu();
+
+  if (finished) {
+    resultScreen.classList.add("hidden");
+    examScreen.classList.add("hidden");
+    startScreen.classList.remove("hidden");
+  }
+
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+$("menuAuto").addEventListener("click", () => {
+  closeMenu();
+
+  if (examScreen.classList.contains("hidden") || finished) {
+    alert("Mulai ujian terlebih dahulu.");
+    return;
+  }
+
+  startAutoAnswer();
+});
+
+$("menuStop").addEventListener("click", () => {
+  stopAutoAnswer();
+  closeMenu();
+});
+
+$("menuReport").addEventListener("click", () => {
+  closeMenu();
+
+  if (!finished) {
+    alert("Laporan tersedia setelah ujian selesai.");
+    return;
+  }
+
+  resultScreen.classList.remove("hidden");
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+/* ==================================
+   GANTI TEMA
+================================== */
+
+const themeToggle = $("themeToggle");
+const themeStatus = $("themeStatus");
+
+function updateThemeButton() {
+  const hacker = document.body.classList.contains("hacker");
+
+  themeToggle.textContent = hacker
+    ? "◉  Kembali ke tema Google Forms"
+    : "◉  Aktifkan tema hijau";
+
+  themeStatus.textContent = hacker
+    ? "Tema saat ini: Hacker Hijau"
+    : "Tema saat ini: Google Forms";
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("hacker");
+
+  try {
+    localStorage.setItem(
+      "yanz-theme",
+      document.body.classList.contains("hacker") ? "hacker" : "google"
+    );
+  } catch (error) {
+    /* Tema tetap dapat digunakan jika penyimpanan tidak tersedia. */
+  }
+
+  updateThemeButton();
+});
+
+/* Tema awal Google Forms. */
+updateThemeButton();
+
+/* ==================================
+   ANIMASI MATRIX
+================================== */
+
+const canvas = $("matrix");
+const ctx = canvas.getContext("2d");
+
+let matrixWidth = 0;
+let matrixHeight = 0;
+let columns = [];
+const fontSize = 14;
+const chars = "01YANZアイウエオカキクケコ";
+
+function resizeMatrix() {
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+
+  matrixWidth = window.innerWidth;
+  matrixHeight = window.innerHeight;
+
+  canvas.width = matrixWidth * ratio;
+  canvas.height = matrixHeight * ratio;
+
+  canvas.style.width = matrixWidth + "px";
+  canvas.style.height = matrixHeight + "px";
+
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+  const count = Math.ceil(matrixWidth / fontSize);
+
+  columns = Array.from(
+    {length:count},
+    () => Math.random() * -40
+  );
+}
+
+window.addEventListener("resize", resizeMatrix);
+
+resizeMatrix();
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0,0,0,0.12)";
+  ctx.fillRect(0, 0, matrixWidth, matrixHeight);
+
+  ctx.font = fontSize + "px monospace";
+  ctx.fillStyle = "#00ff66";
+
+  for (let i = 0; i < columns.length; i++) {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+
+    ctx.fillText(char, i * fontSize, columns[i] * fontSize);
+
+    if (
+      columns[i] * fontSize > matrixHeight &&
+      Math.random() > 0.975
+    ) {
+      columns[i] = 0;
+    } else {
+      columns[i]++;
+    }
+  }
+
+  requestAnimationFrame(drawMatrix);
+}
+
+drawMatrix();
+</script>
+
+</body>
+</html>
